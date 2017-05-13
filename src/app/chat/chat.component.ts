@@ -27,16 +27,16 @@ export class ChatComponent implements OnInit{
       data.forEach(function (user) {
         html+=user+'...'+'<br>';
       });
-      $('#users').html('');
-      $('#users').append(html);
+      $('#users').html('').append(html);
     });
-    // const listenerUsers = Observable.fromEvent(this.socket, 'usernames');
-    // listenerUsers.subscribe((data) => {
-    //   console.log(typeof data);
-    //   let html = '';
-    //   //for (let i=0; i<data.length; )
-    //   //$('users')
-    // });
+    this.socket.on('conversation private post',function(data){
+      console.log(data.message);
+    });
+
+    this.socket.on('private',function(data){
+      console.log('+++++++'+data.msg);
+    });
+
 
   }
 
@@ -64,6 +64,17 @@ export class ChatComponent implements OnInit{
     this.socket.on('for', function (data) {
       console.log(data);
     });
+  }
+
+  privateRoomSendMessages(){
+    let conversation_id = 13;
+    this.socket.emit('subscribe', conversation_id);
+
+    this.socket.emit('send message',{
+      room: conversation_id,
+      message:"Some message"});
+
+    this.socket.emit("private", { msg: 'private message to Vlad'});
   }
 
   ngOnInit(){

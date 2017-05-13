@@ -5,6 +5,8 @@ const http = require('http');
 const bodyParser = require('body-parser');
 let chatHandle = require('./server/chat/chat');
 let userHandle = require('./server/chat/users');
+let privateChatHandle = require('./server/chat/private');
+
 let userList = [];
 // Get our API routes
 const api = require('./server/routes/api');
@@ -43,9 +45,7 @@ io.sockets.on('connection', function(client){
   console.log('a user connected');
   chatHandle(client);
   userHandle(client, userList);
-  // socket.on('message', function (msg) {
-  //   io.emit('message', msg);
-  // });
+  privateChatHandle(client, userList, io);
 });
 
 

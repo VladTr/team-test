@@ -21,7 +21,9 @@ export class ChatComponent implements OnInit{
       let str = '<li>'+data+'</li>';
       $('#messages').append( str);
     });
+
     this.socket.on('usernames', function (data) {
+      console.log('userList');
       console.log(data);
       let html = '';
       data.forEach(function (user) {
@@ -29,6 +31,7 @@ export class ChatComponent implements OnInit{
       });
       $('#users').html('').append(html);
     });
+
     this.socket.on('conversation private post',function(data){
       console.log(data.message);
     });
@@ -74,7 +77,7 @@ export class ChatComponent implements OnInit{
       room: conversation_id,
       message:"Some message"});
 
-    this.socket.emit("private", { msg: 'private message to Vlad'});
+    this.socket.emit("private", { msg: 'private message to Tom'});
   }
 
   ngOnInit(){

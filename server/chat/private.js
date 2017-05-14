@@ -11,9 +11,9 @@ module.exports = function (client, users, io) {
     });});
 
   client.on("private", function(data) {
-    console.log(users[0]);
+    console.log(users['Tom']);
     //console.log(io.to(users[0]));
-    client.to(users[0]).emit("private", { msg: data.msg });
+    users['Tom'].emit("private", { msg: data.msg });
     //client.emit("private", { from: 'Tom', to: data.to, msg: data.msg });
   });
 };

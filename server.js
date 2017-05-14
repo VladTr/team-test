@@ -7,7 +7,7 @@ let chatHandle = require('./server/chat/chat');
 let userHandle = require('./server/chat/users');
 let privateChatHandle = require('./server/chat/private');
 
-let userList = [];
+let users = {};
 // Get our API routes
 const api = require('./server/routes/api');
 
@@ -44,8 +44,8 @@ const io = require('socket.io').listen(server);
 io.sockets.on('connection', function(client){
   console.log('a user connected');
   chatHandle(client);
-  userHandle(client, userList);
-  privateChatHandle(client, userList, io);
+  userHandle(client, users);
+  privateChatHandle(client, users, io);
 });
 
 

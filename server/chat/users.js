@@ -1,25 +1,27 @@
-module.exports = function (client, userlist) {
+module.exports = function (client, users) {
   client.on('new user', function (data, callback) {
-    if (userlist.indexOf(data)!==-1){
+    if (data in users){
       callback(false);
     }else{
       callback(true);
       client.nickname = data;
-      userlist.push(client.nickname);
+      users[client.nickname] = client;
       updateUserList();
+      //console.log(users);
     }
   });
 
   client.on('disconnect',function (data) {
     console.log('disconnected: '+data);
     if(!client.nickname)return;
-    userlist.splice(userlist.indexOf(client.nickname), 1);
+    delete users[client.nickname];
     console.log('disconnected: '+client.nickname);
-    updateUserList()
+    updateUserList();
   });
 
   function updateUserList() {
-    client.broadcast.emit('usernames',userlist);
+    client.emit('usernames', Object.keys(users));
+    client.broadcast.emit('usernames', Object.keys(users));
   }
 };
 
